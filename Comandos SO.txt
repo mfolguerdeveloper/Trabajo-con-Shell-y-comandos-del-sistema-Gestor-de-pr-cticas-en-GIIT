@@ -1,0 +1,143 @@
+--------------------------	COMANDOS UNIX	--------------------------	
+
+Nombre del comando opciones cada opcion va separada con espacio o varias guntas con -
+
+/etc/passwd fichero de configurarion de los usuarios del sistema
+
+| "pai" para tuberias encadenar comandos
+/ "slash" sistema de archivo 
+\ 	secuencias de escape
+
+. para referirse al directorio actual
+.. hace referencia al directorio padre
+
+
+su					->Para meterso modo root
+sudo (comando modo root)		->Para poner comandos en modo root
+chown (nombreUsuario):(nombreUsuario)	->Para cambiar al propietario del archivo
+chown 770 (file name)			->Para cambiar la propiedad Lectura Escritura Ejecutable de: Usuario Grupo Others
+nano (file name)			->Para Abrir ficheros 
+man (nombre del comando)		->Para saber la funcionalidad de un comando
+chmod u+x (file name)			->Para dar permisos de ejecucion(x) al usuario(u)
+cat 					->Para concatenar ficheros o cadenas
+shell ? conjunt o de comandos ?
+echo "texto" 				->Muestra el texto que esta entre comillas
+bash (file name)			->Para ejecutar un shell script
+ls -lr					->Hace una lista recursiva de lo que hay en el directorio.Se debe poner siempre en un shellScript para ejecutar
+history|more				->Muestra una lista de los comando ejecutados
+history> f filename ?			->Para guardar el historial de comandos en un archivo
+$var					->Accede al valor de la variable var
+cal 2015				->calendario de 2015
+date "+%F"				->Devuelve 2022-09-19
+sleep 5					->Para el procesador 5 segundos
+cp f1 f2			 	->Copia el fichero f1 en f2
+mv f1 f2				->mueve de sitio o cambia el nombre
+cat f1					->Muestra el archivo 
+more f1 				->Muestra un archivo paginado
+pg f1				
+wc -l /etc/passwd			->Numero de lineas 		
+a=`wc -l /etc/passwd|awk '{printf $1}'`	->Asigna el numero de lineas a la variable a y la muestra en pantalla
+
+read valor				->para leer un valor metido por teclado
+./shellScript v1 v2 v3 			->Para pasarle variables
+Variables $ para Shell Script
+	$1	variable pasada por parameros 1 v1
+	$2	variable pasada por parameros 2 v2
+	$*	Muestra todos los valores de las variables pasadas una lista
+	$#	Muestra el nuemro de variables pasadas
+	$? 	??
+
+Estructuras de Control IF THEN ELSE
+	
+	if condicion
+	then sentencia
+	elif condicion2
+	then sentenia
+	else sentencia 
+	fi
+test					->Para comprarar dos operadores (nuemricos o cadenas) devuelve un 0 o 1 
+[op1 condicion op2]			->Para comprarar dos operadores (nuemricos o cadenas) devuelve un 0 o 1 
+#linea de codigo 			->Para comentar lineas de codigo
+and or ()				->para poner condiciones encadenadas
+despues de cada if then debo poner un fi
+tambien se puede utilizar (($var==5)) que es como un lenguaje c pero mejor usar test
+
+
+Estructuras de Control CASE
+
+	case $cadena in 
+	patron1)sentencia;;
+	patron2)sentencia;;
+	*)sentencia;;			caso default
+	esac				final
+
+
+
+
+
+Estructura de Control FOR IN DO DONE		RECOMENDACION USAR EL FORMATO C  DE (())
+	
+	Formato  unix:  for i in 1 2 3 4 
+			do 	
+			echo "*"
+			done
+
+	Formato C: 	for ((i=0;i<10;i++))
+			do
+			echo "*"
+			done
+
+
+
+	ALIAS
+Para guardar comandosen un variable , valida para la sesion (Terminal) Para guardar permanente guardarlo en .bashrc de tu home Directory
+alias listar="ls -l"
+
+	REDIRECIONAMIENTOS
+R.de Entrada= read var<dev/stdin 		Para leer por teclado
+R.de Salida=  ls -l>fcontenido			Para guardar la salida del comando ls -l en el fichero llamado fcontenido	(no hace falta añadir extensiones)
+R.de Salida= ls -la dir>>fcontenido		Para añadir al archivo fcontenido la salida del comando ls -la
+Ordenacion= sort -r>fcontenido 			Para ordenar lineapor linea el archivo fcontenido
+
+	BUSQUEDA Y TRATAMIENTO DE TEXTO: find
+find . -name passwd -print		Para buscar y imprimir (con -print) en el directorio actual un archivo que tenga el nombre passwd
+grep 					Busca una secuencia de caracteres en un archivo o lista de estos
+grep "root" etc/passwd 			Busca los archivos que contengan root en ese directorio
+grep "^root" etc/passwd 		Busca los archivos que empiezen por root en ese directorio
+grep -i -n hola uno.txt dos.txt		Busca en los dos ficheros la palabra hola case insensitive Mayus y Minus(-i para case insensitive -n para mostrar la linea)
+cut -f 1,3 -d: /etc/passwd		Para selecionar los campos 1 y3 separadospor el delmitador: 
+grep "marcos" /etc/passwd|cut  -f1,3 -d: 	Para mostrar todos los Marcos con los dos camposdel fichero passwd
+grep "marcos" /etc/passwd|cut  -f1,3 -d: |sort -k2 -t : -n     (-k2 ordena el campo 2 , -t para establecer el delimitador -n para de menos a mas)´
+paste f1 f2 > f3				Para juntar el contenido de los ficheros f1 f2 y guardarlo en f3
+join -1 1 -2 2 					Para comparar distintas lineas
+pr					Para formatear la salida de un fichero
+sort f1					Para ordenar el fichero f1 en orden alfabetico  -r para mostrar el orden inverso s -n orden numerico
+sort -k 2 -t : f1 				-k sirve para ordenar por el segundo parametro -t para expecificar el separador :
+
+BUSCAR FUNCIONAMIENTO DEL JOIN , UNIQ(para lineas repetidas saca una vez los valores repes) , COMM ,CMP ,DIFF  USANDO EL MAN DE UNIX
+
+join -t: fichero1 fichero2	Para unir dos tablas mostrando las filas que coincidan en este caso usara el separador:
+
+comm f1 f2			Para obtener las lineas que se encuentren en los dos ficheros a analizar o mostrar las lineas que no se repitan
+
+diff -r -q f1 f2		Para comparar dos ficheros el parametro -r sirve para comprobar dentro de los directorios selecionados  -q sirve para mostrar en pantalla solo los archivos que son distintos en el mismo directorio
+
+cmp f1 f2 			Para comparar el fichero byte a byte para saber si es el mismo
+		REGLAS PRACTICA
+No queire ver informacion tal cual, hay que formatearla  ventana interface ,cabeceras, formateada ,sistema de columnas no una unica columna
+Usar pr para el formateo con columnas con cut  BUSCAR GOOGLE como hacer con cabeceras
+PEdir teclas para mostrar lineas siguientes y para volver a menu
+	
+	PROCESOS
+ps	Muestra el estado de los procesos activos del sistema
+
+
+----------------PREGUNTAS PRACTICAS
+Hay que poner palabras con acentos?
+Hace falta iniciar sesion antes de acceder a los menus?
+Para que sirven los $var
+Preguntar cuando salir lode echo y read
+
+
+CUANDO NO SE MUESTARN LINEAS A CAMBIAR DAR LA POSIBILIDAD PARA SALIR
+
